@@ -1,0 +1,204 @@
+{
+  "usuarios": [
+    {
+      "id": 2,
+      "nome": "Vitor",
+      "email": "vitor@jesus.com",
+      "senha": "vitor",
+      "premium": "1",
+      "imagemPerfil": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWn6RYTCMqjPeCW9wcbFLDr6U0JUAs_W1xaA&s"
+    },
+    {
+      "id": 3,
+      "nome": "Gabriel Pereira",
+      "email": "gabriel@pereira.com",
+      "senha": "gabriel",
+      "premium": 1,
+      "imagemPerfil": "https://cdn.britannica.com/84/200584-050-7EC3F3F6/Jim-Carrey-2012.jpg"
+    },
+    {
+      "id": 4,
+      "nome": "Vitor de Jesus",
+      "email": "vitor@jesus.com",
+      "senha": "vitor",
+      "premium": 1,
+      "imagemPerfil": "https://i.pinimg.com/originals/f8/34/82/f8348255fb431d0a9218615ea7ea7807.jpg"
+    },
+    {
+      "id": 5,
+      "nome": "Maria Silva",
+      "email": "Maria@Silva.com",
+      "senha": "Maria",
+      "premium": "1",
+      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg"
+    },
+    {
+      "id": 6,
+      "nome": "Maria Silva",
+      "email": "Maria@Silva.com",
+      "senha": "Maria",
+      "premium": "1",
+      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg"
+    }
+  ],
+  "publicacoes": [
+    {
+      "id": 1,
+      "descricao": "Passeio pelo parque, maravilhoso dia de sol!",
+      "dataPublicacao": "31/01/2024",
+      "imagem": "https://spcity.com.br/wp-content/uploads/2016/04/Orquidario-Paque-Villa-Lobos.jpg",
+      "local": "Parque Central",
+      "idUsuario": 1,
+      "comentarios": [
+        {
+          "id": 1,
+          "descricao": "Que lindo o parque! 😍",
+          "idUsuario": 2,
+          "idPublicacao": 1
+        },
+        {
+          "id": 2,
+          "descricao": "Que dia maravilhoso!",
+          "idUsuario": 3,
+          "idPublicacao": 1
+        }
+      ],
+      "curtidas": [
+        {
+          "idUsuario": 2,
+          "idPublicacao": 1
+        },
+        {
+          "idUsuario": 3,
+          "idPublicacao": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "descricao": "Estudando inglês, uma jornada de aprendizado constante.",
+      "dataPublicacao": "30/10/2024",
+      "imagem": "https://midias.eurodicas.com.br/wp-content/uploads/2024/07/como-aprender-ingles-sozinho-1-750x420.jpg.webp",
+      "local": "Casa",
+      "idUsuario": 1,
+      "comentarios": [
+        {
+          "id": 3,
+          "descricao": "Muito bom! Vai longe com esse foco!",
+          "idUsuario": 3,
+          "idPublicacao": 2
+        }
+      ],
+      "curtidas": [
+        {
+          "idUsuario": 3,
+          "idPublicacao": 2
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "descricao": "Novo Emprego",
+      "dataPublicacao": "23/01/2025",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmaWr7Gb5iu8SKe0W_UkOY9XYNFMcZGbwy3w&s",
+      "local": "Prefeitura",
+      "idUsuario": "3",
+      "comentarios": [
+        {
+          "id": 4,
+          "descricao": "Sucesso na nova jornada, Gabriel! 👏",
+          "idUsuario": 1,
+          "idPublicacao": 3
+        }
+      ],
+      "curtidas": [
+        {
+          "idUsuario": 1,
+          "idPublicacao": 3
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "descricao": "Uma viagem dos sonhos! Vamos para Paris!",
+      "dataPublicacao": "05/03/2024",
+      "imagem": "https://www.melhoresdestinos.com.br/wp-content/uploads/2019/02/passagens-aereas-paris-capa2019-02.jpg",
+      "local": "Paris, França",
+      "idUsuario": 2,
+      "comentarios": [
+        {
+          "id": 5,
+          "descricao": "Incrível! Eu também quero!",
+          "idUsuario": 3,
+          "idPublicacao": 4
+        }
+      ],
+      "curtidas": [
+        {
+          "idUsuario": 3,
+          "idPublicacao": 4
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "descricao": "Fazendo novas amizades por aí! 😊",
+      "dataPublicacao": "20/05/2024",
+      "imagem": "https://services.meteored.com/img/article/3-tipos-amistades-que-hay-que-tener-vida-amigos-universidad-de-harvard-1696982866224_512.jpg",
+      "local": "Restaurante",
+      "idUsuario": 3,
+      "comentarios": [],
+      "curtidas": [
+        {
+          "idUsuario": 1,
+          "idPublicacao": 5
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "descricao": "Trabalhando em algo muito importante, logo vai dar certo!",
+      "dataPublicacao": "2024-03-05",
+      "imagem": "https://img.freepik.com/fotos-gratis/mulher-trabalhando-em-sua-oficina-para-uma-invencao-criativa_23-2149067190.jpg",
+      "local": "Escritório",
+      "idUsuario": 3,
+      "comentarios": [
+        {
+          "id": 6,
+          "descricao": "Vamos em frente! 💪",
+          "idUsuario": 2,
+          "idPublicacao": 6
+        }
+      ],
+      "curtidas": [
+        {
+          "idUsuario": 2,
+          "idPublicacao": 6
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "descricao": "Adoro bananas!",
+      "dataPublicacao": "2024-03-07",
+      "imagem": "https://agazetadoacre.com/wp-content/uploads/2021/11/d656b968-d26b-4ee6-b6bc-79aac31b5668.png",
+      "local": "Mercado",
+      "idUsuario": 1,
+      "comentarios": [],
+      "curtidas": [
+        {
+          "idUsuario": 3,
+          "idPublicacao": 7
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "descricao": "Dev Projetos",
+      "dataPublicacao": "23/01/2025",
+      "imagem": "https://eag.com.br/wp-content/uploads/2024/11/Dominio-Pessoal-Desenvolvendo-Habilidades-de-Autogestao-1024x574.png",
+      "local": "Big Tech",
+      "idUsuario": "2"
+    }
+  ]
+}

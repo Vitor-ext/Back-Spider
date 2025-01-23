@@ -1,0 +1,31 @@
+{
+  "name": "ds2-projeto-1",
+  "version": "1.0.0",
+  "description": "Projeto 1 DS2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vitor-ext/Projeto-1-DS2.git"
+  },
+  "keywords": [
+    "back-end",
+    "fake",
+    "tarefas"
+  ],
+  "author": "Vitor de Jesus ❣🚀❣",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vitor-ext/Projeto-1-DS2/issues"
+  },
+  "homepage": "https://github.com/Vitor-ext/Projeto-1-DS2#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "json-server": "^0.17.4"
+  }
+}
