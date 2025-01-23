@@ -39,6 +39,14 @@
       "senha": "Maria",
       "premium": "1",
       "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg"
+    },
+    {
+      "id": 7,
+      "nome": "Marcel Silva",
+      "email": "Maria@Silva.com",
+      "senha": "Maria",
+      "premium": "1",
+      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg"
     }
   ],
   "publicacoes": [
@@ -195,6 +203,22 @@
     {
       "id": 8,
       "descricao": "Dev Projetos",
+      "dataPublicacao": "23/01/2025",
+      "imagem": "https://eag.com.br/wp-content/uploads/2024/11/Dominio-Pessoal-Desenvolvendo-Habilidades-de-Autogestao-1024x574.png",
+      "local": "Big Tech",
+      "idUsuario": "2"
+    },
+    {
+      "id": 9,
+      "descricao": "Dev Projetos T.I",
+      "dataPublicacao": "23/01/2025",
+      "imagem": "https://eag.com.br/wp-content/uploads/2024/11/Dominio-Pessoal-Desenvolvendo-Habilidades-de-Autogestao-1024x574.png",
+      "local": "Big Tech",
+      "idUsuario": "2"
+    },
+    {
+      "id": 10,
+      "descricao": "Dev Projetos T.I",
       "dataPublicacao": "23/01/2025",
       "imagem": "https://eag.com.br/wp-content/uploads/2024/11/Dominio-Pessoal-Desenvolvendo-Habilidades-de-Autogestao-1024x574.png",
       "local": "Big Tech",

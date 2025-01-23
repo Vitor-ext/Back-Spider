@@ -1,294 +1,200 @@
 const jsonServer = require('json-server');
 const fs = require('fs');
 const path = require('path');
-const server = jsonServer.create();
-const cors = require('cors');  // Importar o pacote cors
-const middlewares = jsonServer.defaults();
+const cors = require('cors');
+const bodyParser = require('body-parser'); // Para trabalhar com req.body
 
+const server = jsonServer.create();
+const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 8080;
 
-// Carrega o banco de dados diretamente do arquivo JSON
+// Configuração do diretório temporário
+const tempDir = '/tmp';
+if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir);
+}
+
+// Caminhos dos arquivos
 const dbFile = path.join(__dirname, 'db.json');
+const tempDbFile = path.join(tempDir, 'db.json');
 
-// Função para ler e parsear o conteúdo de db.json
-const readDB = () => {
-    const data = fs.readFileSync(dbFile, 'utf8');
-    return JSON.parse(data);
+// Função para carregar o banco de dados inicial no arquivo temporário
+const loadInitialDB = () => {
+    if (!fs.existsSync(tempDbFile)) {
+        const data = fs.readFileSync(dbFile, 'utf8');
+        fs.writeFileSync(tempDbFile, data, 'utf8');
+    }
 };
 
-// Função para atualizar o db.json após alterações
-const writeDB = (data) => {
-    fs.writeFileSync(dbFile, JSON.stringify(data, null, 2), 'utf8');
-};
+// Funções de leitura e escrita no banco de dados
+const readDB = () => JSON.parse(fs.readFileSync(tempDbFile, 'utf8'));
+const writeDB = (data) => fs.writeFileSync(tempDbFile, JSON.stringify(data, null, 2), 'utf8');
 
+// Carregar os dados iniciais no arquivo temporário
+loadInitialDB();
+
+// Middlewares globais
 server.use(cors());
+server.use(bodyParser.json());
+server.use(middlewares);
 
-// Custom POST /login route for user authentication
+// Rota personalizada: Login
 server.post('/login', (req, res) => {
-    
-     const { email, senha } = req.query;
-     
-    // Verificar se email e senha foram passados
+    const { email, senha } = req.body;
+
     if (!email || !senha) {
         return res.status(400).json({ message: 'Email e senha são obrigatórios!' });
     }
 
-    // Ler o banco de dados diretamente
     const db = readDB();
-
-    // Encontrar o usuário pelo email e verificar a senha
-    const usuario = db.usuarios.find(u => u.email === email && u.senha === senha);
+    const usuario = db.usuarios.find((u) => u.email === email && u.senha === senha);
 
     if (usuario) {
-        return res.status(200).json({ success: true });
+        res.status(200).json({ success: true });
     } else {
-        return res.status(401).json({ success: false });
+        res.status(401).json({ success: false, message: 'Credenciais inválidas' });
     }
 });
 
-
-// Register User
+// Rota para cadastro de usuário
 server.post('/user/cadastrarUser', (req, res) => {
-    const { nome, email, senha, premium, imagemPerfil } = req.query;
+    const { nome, email, senha, premium, imagemPerfil } = req.body;
 
-    // Verificar se todos os campos necessários estão presentes
-    if (!nome || !email || !senha || !premium || !imagemPerfil) {
+    if (!nome || !email || !senha || premium === undefined || !imagemPerfil) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
     }
 
-    // Ler o banco de dados diretamente
     const db = readDB();
-
-    // Gerar um novo ID para a publicação
     const newId = db.usuarios.length > 0 ? db.usuarios[db.usuarios.length - 1].id + 1 : 1;
 
-    // Criar a nova publicação
-    const novoUser = {
-        id: newId,
-        nome,
-        email,
-        senha,
-        premium,
-        imagemPerfil
-    };
-
-    // Adicionar a nova publicação ao banco de dados
+    const novoUser = { id: newId, nome, email, senha, premium, imagemPerfil };
     db.usuarios.push(novoUser);
 
-    // Atualizar o arquivo db.json com a nova publicação
     writeDB(db);
-
-    // Retornar a nova publicação criada
     res.status(201).json(novoUser);
 });
 
-
-// delete user
+// Rota para deletar usuário
 server.delete('/user/deleteuser/:id', (req, res) => {
-    const idDelete = parseInt(req.params.id); // Converta para número!
+    const userId = parseInt(req.params.id, 10);
 
-    if (isNaN(idDelete)) {
-        return res.status(400).json({ // Retorna erro 400 se o ID não for um número
-            "Message": "ID inválido.",
-            "Erro": "ID deve ser um número inteiro.",
-            "Sucess": "False"
-        });
-    }
-
-    try {
-        const db = readDB();
-        const listUsers = db.usuarios;
-
-        const index = listUsers.findIndex(usuario => usuario.id === idDelete);
-
-        if (index === -1) {
-            return res.status(404).json({ // Retorna 404 se a publicação não for encontrada
-                "Message": "Usuário não encontrado.",
-                "Erro": "Usuário com o ID especificado não existe.",
-                "Sucess": "False"
-            });
-        }
-
-        listUsers.splice(index, 1); // Remove o item CORRETAMENTE usando o índice
-
-        writeDB(db);
-
-        res.status(204).send();
-      
-
-    } catch (erro) {
-        
-        res.status(501).json({
-            "Message": "Não foi possivel deletar a publicação.",
-            "Erro": erro,
-            "Sucess": "False"
-        })
-    }
-
-})
-
-
-// Update User (PUT)
-server.put('/user/atualizarUser/:id', (req, res) => {
-    const userId = parseInt(req.params.id);
     if (isNaN(userId)) {
-        return res.status(400).json({ message: 'ID de usuário inválido' });
+        return res.status(400).json({ message: 'ID inválido' });
     }
 
-    const { nome, email, senha, premium, imagemPerfil } = req.query;
-
-    //Verifica se pelo menos um campo foi enviado para atualizar
-    if (!nome && !email && !senha && premium === undefined && !imagemPerfil) {
-        return res.status(400).json({ message: 'Nenhum campo para atualizar foi fornecido.' });
-    }
-
-    const db = readDB(); // Lê o banco de dados
-
-    const userIndex = db.usuarios.findIndex(user => user.id === userId);
+    const db = readDB();
+    const userIndex = db.usuarios.findIndex((u) => u.id === userId);
 
     if (userIndex === -1) {
         return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
-    // Atualiza apenas os campos fornecidos na requisição
-    if (nome) db.usuarios[userIndex].nome = nome;
-    if (email) db.usuarios[userIndex].email = email;
-    if (senha) db.usuarios[userIndex].senha = senha;
-    if (premium !== undefined) db.usuarios[userIndex].premium = premium;
-    if (imagemPerfil) db.usuarios[userIndex].imagemPerfil = imagemPerfil;
-
-    writeDB(db); // Escreve as alterações no banco de dados
-
-    res.status(200).json(db.usuarios[userIndex]); // Retorna o usuário atualizado
+    db.usuarios.splice(userIndex, 1);
+    writeDB(db);
+    res.status(204).send();
 });
 
+// Rota para atualizar usuário
+server.put('/user/atualizarUser/:id', (req, res) => {
+    const userId = parseInt(req.params.id, 10);
 
-
-// Publicações
-
-server.get('/publicacoes/listarPublicacoes', (req, res) => {
-    // Ler o banco de dados diretamente
-    const db = readDB();
-
-    let publicacoes = db.publicacoes
-
-    res.status(200).json(publicacoes)
-
-})
-
-server.post('/publicacoes/cadastrarPublicacao', (req, res) => {
-    const { descricao, dataPublicacao, imagem, local, idUsuario } = req.query;
-
-    // Verificar se todos os campos necessários estão presentes
-    if (!descricao || !dataPublicacao || !imagem || !local || !idUsuario) {
-        return res.status(400).json({ message: 'Todos os campos são obrigatórios: descricao, dataPublicacao, imagem, local, idUsuario' });
+    if (isNaN(userId)) {
+        return res.status(400).json({ message: 'ID inválido' });
     }
 
-    // Ler o banco de dados diretamente
-    const db = readDB();
+    const { nome, email, senha, premium, imagemPerfil } = req.body;
 
-    // Gerar um novo ID para a publicação
+    const db = readDB();
+    const userIndex = db.usuarios.findIndex((u) => u.id === userId);
+
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const user = db.usuarios[userIndex];
+    if (nome) user.nome = nome;
+    if (email) user.email = email;
+    if (senha) user.senha = senha;
+    if (premium !== undefined) user.premium = premium;
+    if (imagemPerfil) user.imagemPerfil = imagemPerfil;
+
+    writeDB(db);
+    res.status(200).json(user);
+});
+
+// Rota para listar publicações
+server.get('/publicacoes/listarPublicacoes', (req, res) => {
+    const db = readDB();
+    res.status(200).json(db.publicacoes);
+});
+
+// Rota para cadastrar publicação
+server.post('/publicacoes/cadastrarPublicacao', (req, res) => {
+    const { descricao, dataPublicacao, imagem, local, idUsuario } = req.body;
+
+    if (!descricao || !dataPublicacao || !imagem || !local || !idUsuario) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    const db = readDB();
     const newId = db.publicacoes.length > 0 ? db.publicacoes[db.publicacoes.length - 1].id + 1 : 1;
 
-    // Criar a nova publicação
-    const novaPublicacao = {
-        id: newId,
-        descricao,
-        dataPublicacao,
-        imagem,
-        local,
-        idUsuario
-    };
-
-    // Adicionar a nova publicação ao banco de dados
+    const novaPublicacao = { id: newId, descricao, dataPublicacao, imagem, local, idUsuario };
     db.publicacoes.push(novaPublicacao);
 
-    // Atualizar o arquivo db.json com a nova publicação
     writeDB(db);
-
-    // Retornar a nova publicação criada
     res.status(201).json(novaPublicacao);
 });
 
-
+// Rota para deletar publicação
 server.delete('/publicacoes/deletarPublicacao/:id', (req, res) => {
-    const idDelete = parseInt(req.params.id); // Converta para número!
+    const pubId = parseInt(req.params.id, 10);
 
-    if (isNaN(idDelete)) {
-        return res.status(400).json({ // Retorna erro 400 se o ID não for um número
-            "Message": "ID inválido.",
-            "Erro": "ID deve ser um número inteiro.",
-            "Sucess": "False"
-        });
-    }
-
-    try {
-        const db = readDB();
-        const listPublicacoes = db.publicacoes;
-
-        const index = listPublicacoes.findIndex(publicacao => publicacao.id === idDelete);
-
-        if (index === -1) {
-            return res.status(404).json({ // Retorna 404 se a publicação não for encontrada
-                "Message": "Publicação não encontrada.",
-                "Erro": "Publicação com o ID especificado não existe.",
-                "Sucess": "False"
-            });
-        }
-
-        listPublicacoes.splice(index, 1); // Remove o item CORRETAMENTE usando o índice
-
-        writeDB(db);
-
-        res.status(204).send();
-      
-
-    } catch (erro) {
-        
-        res.status(501).json({
-            "Message": "Não foi possivel deletar a publicação.",
-            "Erro": erro,
-            "Sucess": "False"
-        })
-    }
-
-})
-
-// Update Publicacao (PUT)
-server.put('/publicacoes/atualizarPublicacao/:id', (req, res) => {
-    const publicacaoId = parseInt(req.params.id); // Converte o ID para número
-    if (isNaN(publicacaoId)) {
-        return res.status(400).json({ message: 'ID de publicação inválido' });
-    }
-
-    const { descricao, dataPublicacao, imagem, local, idUsuario } = req.query;
-
-    // Verifica se pelo menos um campo foi enviado para atualizar
-    if (!descricao && !dataPublicacao && !imagem && !local && !idUsuario) {
-        return res.status(400).json({ message: 'Nenhum campo para atualizar foi fornecido.' });
+    if (isNaN(pubId)) {
+        return res.status(400).json({ message: 'ID inválido' });
     }
 
     const db = readDB();
-    const publicacaoIndex = db.publicacoes.findIndex(publicacao => publicacao.id === publicacaoId);
+    const pubIndex = db.publicacoes.findIndex((p) => p.id === pubId);
 
-    if (publicacaoIndex === -1) {
+    if (pubIndex === -1) {
         return res.status(404).json({ message: 'Publicação não encontrada' });
     }
 
-    // Atualiza apenas os campos fornecidos na requisição
-    if (descricao) db.publicacoes[publicacaoIndex].descricao = descricao;
-    if (dataPublicacao) db.publicacoes[publicacaoIndex].dataPublicacao = dataPublicacao;
-    if (imagem) db.publicacoes[publicacaoIndex].imagem = imagem;
-    if (local) db.publicacoes[publicacaoIndex].local = local;
-    if (idUsuario) db.publicacoes[publicacaoIndex].idUsuario = idUsuario;
-
+    db.publicacoes.splice(pubIndex, 1);
     writeDB(db);
-
-    res.status(200).json(db.publicacoes[publicacaoIndex]); // Retorna a publicação atualizada
+    res.status(204).send();
 });
 
+// Atualizar publicação
+server.put('/publicacoes/atualizarPublicacao/:id', (req, res) => {
+    const pubId = parseInt(req.params.id, 10);
 
-server.use(middlewares);
+    if (isNaN(pubId)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    const { descricao, dataPublicacao, imagem, local, idUsuario } = req.body;
+
+    const db = readDB();
+    const pubIndex = db.publicacoes.findIndex((p) => p.id === pubId);
+
+    if (pubIndex === -1) {
+        return res.status(404).json({ message: 'Publicação não encontrada' });
+    }
+
+    const publicacao = db.publicacoes[pubIndex];
+    if (descricao) publicacao.descricao = descricao;
+    if (dataPublicacao) publicacao.dataPublicacao = dataPublicacao;
+    if (imagem) publicacao.imagem = imagem;
+    if (local) publicacao.local = local;
+    if (idUsuario) publicacao.idUsuario = idUsuario;
+
+    writeDB(db);
+    res.status(200).json(publicacao);
+});
+
+// Inicia o servidor
 server.listen(port, () => {
-    console.log('JSON Server is running...');
+    console.log(`JSON Server is running on port ${port}`);
 });
