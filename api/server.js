@@ -102,7 +102,7 @@ server.put('/user/atualizarUser/:id', (req, res) => {
         return res.status(400).json({ message: 'ID inválido' });
     }
 
-    const { nome, email, premium, imagemPerfil } = req.body;
+    const { nome, email, premium, imagemPerfil, senhaRecuperacao } = req.body;
 
     const db = readDB();
     const userIndex = db.usuarios.findIndex((u) => u.id === userId);
@@ -115,6 +115,7 @@ server.put('/user/atualizarUser/:id', (req, res) => {
     if (nome) user.nome = nome;
     if (email) user.email = email;
     if (premium !== undefined) user.premium = premium;
+    if (senhaRecuperacao !== undefined) user.senhaRecuperacao = senhaRecuperacao;
     if (imagemPerfil) user.imagemPerfil = imagemPerfil;
 
     writeDB(db);
