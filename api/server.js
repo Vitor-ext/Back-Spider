@@ -143,14 +143,24 @@ server.post('/user/RememberPassword', (req, res) => {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
     }
 
+    const db = readDB()
+
 
     const user = db.usuarios.find(user => user.email === email);
+
 
     if(!user) {
         return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
-    res.status(200).json(user);
+    if(user.senhaRecuperacao == wordKey) {
+        res.status(200).json(user);
+
+    } else{
+        return res.status(401).json({ message: 'Palavra chave incorreta..' });
+    }
+
+
 });
 
 // Rota para atualizar password
