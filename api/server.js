@@ -122,6 +122,66 @@ server.put('/user/atualizarUser/:id', (req, res) => {
     res.status(200).json(user);
 });
 
+
+
+// Rota para listar os storys
+server.get('/storys/listarStorys', (req, res) => {
+    const db = readDB();
+    res.status(200).json(db.storys)
+})
+
+
+// Rota para criar novos storys
+server.post('/storys/cadastrarStorys', (req, res) => {
+
+    const {descricao, dataPublicacao, imagem, local, idUsuario, } = req.body;
+
+
+    if (!descricao || !dataPublicacao || !imagem || !local || !idUsuario) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    const db = readDB();
+    const newId = db.storys.length > 0 ? db.publicacoes[db.publicacoes.length - 1].id + 1 : 1;
+
+    const novoStory = { id: newId, descricao, dataPublicacao, imagem, local, idUsuario };
+    db.storys.push(novoStory);
+
+    writeDB(db);
+    res.status(201).json(novoStory);
+
+})
+
+
+server.post('/storys/likeStory', (req, res) => {
+
+    const {idUser, idStory} = req.body;
+
+    const db = readDB();
+
+    if(!idUser || !idStory) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    for (let i = 0; i < db.storys.id; i++ ) {
+
+        if( i == idStory ) {
+
+            db.storys.curtidas
+            
+        }
+
+    }
+ 
+
+
+
+})
+
+
+
+
+
 // Rota para listar publicações
 server.get('/publicacoes/listarPublicacoes', (req, res) => {
     const db = readDB();

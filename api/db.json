@@ -6,7 +6,8 @@
       "email": "vitor@jesus.com",
       "senha": "vitor",
       "premium": "1",
-      "imagemPerfil": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWn6RYTCMqjPeCW9wcbFLDr6U0JUAs_W1xaA&s"
+      "imagemPerfil": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWn6RYTCMqjPeCW9wcbFLDr6U0JUAs_W1xaA&s",
+      "senhaRecuperacao": "Cachorro123"
     },
     {
       "id": 3,
@@ -14,7 +15,8 @@
       "email": "gabriel@pereira.com",
       "senha": "gabriel",
       "premium": 1,
-      "imagemPerfil": "https://cdn.britannica.com/84/200584-050-7EC3F3F6/Jim-Carrey-2012.jpg"
+      "imagemPerfil": "https://cdn.britannica.com/84/200584-050-7EC3F3F6/Jim-Carrey-2012.jpg",
+      "senhaRecuperacao": "Flamengo2025"
     },
     {
       "id": 4,
@@ -22,7 +24,8 @@
       "email": "vitor@jesus.com",
       "senha": "vitor",
       "premium": 1,
-      "imagemPerfil": "https://i.pinimg.com/originals/f8/34/82/f8348255fb431d0a9218615ea7ea7807.jpg"
+      "imagemPerfil": "https://i.pinimg.com/originals/f8/34/82/f8348255fb431d0a9218615ea7ea7807.jpg",
+      "senhaRecuperacao": "BolaDeFutebol"
     },
     {
       "id": 5,
@@ -30,7 +33,8 @@
       "email": "Maria@Silva.com",
       "senha": "Maria",
       "premium": "1",
-      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg"
+      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg",
+      "senhaRecuperacao": "LolaCachorro"
     },
     {
       "id": 6,
@@ -38,7 +42,8 @@
       "email": "Maria@Silva.com",
       "senha": "Maria",
       "premium": "1",
-      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg"
+      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg",
+      "senhaRecuperacao": "LolaCachorro"
     },
     {
       "id": 7,
@@ -46,7 +51,8 @@
       "email": "Maria@Silva.com",
       "senha": "Maria",
       "premium": "1",
-      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg"
+      "imagemPerfil": "https://assets.propmark.com.br/uploads/2022/02/WhatsApp-Image-2022-02-18-at-08.52.06.jpeg",
+      "senhaRecuperacao": "BichoDePelucia"
     }
   ],
   "publicacoes": [
@@ -224,5 +230,138 @@
       "local": "Big Tech",
       "idUsuario": "2"
     }
+  ],
+    "storys": [
+    {
+      "id": 1,
+      "descricao": "Acordei cedo para um dia de trabalho! 💻",
+      "dataPublicacao": "14/03/2025",
+      "imagem": "https://images.pexels.com/photos/7623549/pexels-photo-7623549.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Escritório",
+      "idUsuario": 2,
+      "curtidas": [
+        {
+          "idUsuario": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "descricao": "No final de semana com amigos, sempre uma boa companhia! 🍻",
+      "dataPublicacao": "13/03/2025",
+      "imagem": "https://images.pexels.com/photos/1833320/pexels-photo-1833320.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Bar",
+      "idUsuario": 3,
+      "curtidas": [
+        {
+          "idUsuario": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "descricao": "Pronto para minha corrida matinal! 🏃‍♂️",
+      "dataPublicacao": "13/03/2025",
+      "imagem": "https://images.pexels.com/photos/2803158/pexels-photo-2803158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Parque",
+      "idUsuario": 4,
+      "curtidas": [
+        {
+          "idUsuario": 2
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "descricao": "Explorando novos sabores, a gastronomia é uma arte! 🍽️",
+      "dataPublicacao": "14/03/2025",
+      "imagem": "https://images.pexels.com/photos/31145232/pexels-photo-31145232.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Restaurante",
+      "idUsuario": 5,
+      "curtidas": [
+        {
+          "idUsuario": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "descricao": "Bora para mais um dia de trabalho, vamos com tudo! 💪",
+      "dataPublicacao": "14/03/2025",
+      "imagem": "https://images.pexels.com/photos/6407633/pexels-photo-6407633.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Escritório",
+      "idUsuario": 6,
+      "curtidas": [
+        {
+          "idUsuario": 2
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "descricao": "Fazendo uma pausa para um café, quem mais ama esse momento? ☕",
+      "dataPublicacao": "14/03/2025",
+      "imagem": "https://images.pexels.com/photos/20444220/pexels-photo-20444220/free-photo-of-feijoes-vagens-cafe-copo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Cafeteria",
+      "idUsuario": 7,
+      "curtidas": [
+        {
+          "idUsuario": 3
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "descricao": "Curtindo uma tarde relaxante na praia, sensação de liberdade! 🌊",
+      "dataPublicacao": "13/03/2025",
+      "imagem": "https://images.pexels.com/photos/237272/pexels-photo-237272.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Praia",
+      "idUsuario": 2,
+      "curtidas": [
+        {
+          "idUsuario": 1
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "descricao": "Finalizando mais uma etapa do projeto, já já vamos para a próxima! 🚀",
+      "dataPublicacao": "12/03/2025",
+      "imagem": "https://images.pexels.com/photos/31080433/pexels-photo-31080433.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Escritório",
+      "idUsuario": 3,
+      "curtidas": [
+        {
+          "idUsuario": 4
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "descricao": "Nada como uma boa leitura para relaxar e aprender mais! 📚",
+      "dataPublicacao": "14/03/2025",
+      "imagem": "",
+      "local": "Biblioteca",
+      "idUsuario": 4,
+      "curtidas": [
+        {
+          "idUsuario": 5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "descricao": "Celebrando mais um aniversário! 🎉",
+      "dataPublicacao": "12/03/2025",
+      "imagem": "https://images.pexels.com/photos/4262414/pexels-photo-4262414.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "local": "Casa",
+      "idUsuario": 5,
+      "curtidas": [
+        {
+          "idUsuario": 6
+        }
+      ]
+    }
   ]
+
 }
