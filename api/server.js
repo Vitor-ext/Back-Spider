@@ -102,7 +102,7 @@ server.put('/user/atualizarUser/:id', (req, res) => {
         return res.status(400).json({ message: 'ID inválido' });
     }
 
-    const { nome, email, senha, premium, imagemPerfil } = req.body;
+    const { nome, email, premium, imagemPerfil } = req.body;
 
     const db = readDB();
     const userIndex = db.usuarios.findIndex((u) => u.id === userId);
@@ -114,7 +114,6 @@ server.put('/user/atualizarUser/:id', (req, res) => {
     const user = db.usuarios[userIndex];
     if (nome) user.nome = nome;
     if (email) user.email = email;
-    if (senha) user.senha = senha;
     if (premium !== undefined) user.premium = premium;
     if (imagemPerfil) user.imagemPerfil = imagemPerfil;
 
@@ -122,6 +121,63 @@ server.put('/user/atualizarUser/:id', (req, res) => {
     res.status(200).json(user);
 });
 
+// Rota para listar os Usuarios
+server.get('/user/listarUsers', (req, res) => {
+    const db = readDB();
+
+    let listUser = db.usuarios;
+
+    listUser.forEach(user => {
+        delete user['senhaRecuperacao'];
+        delete user['senha'];
+    });
+
+    res.status(200).json(listUser)
+})
+
+
+server.post('/user/RememberPassword', (req, res) => {
+    const { email, wordKey } = req.body;
+
+    if (!email || !wordKey) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+
+    const user = db.usuarios.find(user => user.email === email);
+
+    if(!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    res.status(200).json(user);
+});
+
+// Rota para atualizar password
+server.put('/user/newPassword/:id', (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+
+    if (isNaN(userId)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    const {senha} = req.body;
+
+    const db = readDB();
+    const userIndex = db.usuarios.findIndex((u) => u.id === userId);
+
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const user = db.usuarios[userIndex];
+    
+    if (senha) user.senha = senha;
+
+    
+    writeDB(db);
+    res.status(200).json(user);
+});
 
 
 // Rota para listar os storys
@@ -134,7 +190,7 @@ server.get('/storys/listarStorys', (req, res) => {
 // Rota para criar novos storys
 server.post('/storys/cadastrarStorys', (req, res) => {
 
-    const {descricao, dataPublicacao, imagem, local, idUsuario, } = req.body;
+    const { descricao, dataPublicacao, imagem, local, idUsuario, } = req.body;
 
 
     if (!descricao || !dataPublicacao || !imagem || !local || !idUsuario) {
@@ -155,32 +211,38 @@ server.post('/storys/cadastrarStorys', (req, res) => {
 
 server.post('/storys/likeStory', (req, res) => {
 
-    const {idUser, idStory} = req.body;
+    const { idUser, idStory } = req.body;
 
     const db = readDB();
 
-    if(!idUser || !idStory) {
+    if (!idUser || !idStory) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
     }
 
-    for (let i = 0; i < db.storys.id; i++ ) {
+    const story = db.storys.find(story => story.id === idStory);
 
-        if( i == idStory ) {
 
-            db.storys.curtidas
-            
-        }
-
+    if (!story) {
+        return res.status(404).json({ message: 'Story não encontrado' });
     }
- 
 
+    const userAlreadyLiked = story.curtidas.some(like => like.idUsuario === idUser);
+
+    if (userAlreadyLiked) {
+        return res.status(400).json({ message: 'Usuário já curtiu este story' });
+    }
+
+
+    story.curtidas.push({ idUsuario: idUser });
+
+
+    writeDB(db);
+
+
+    return res.status(200).json({ message: 'Curtida adicionada com sucesso', story });
 
 
 })
-
-
-
-
 
 // Rota para listar publicações
 server.get('/publicacoes/listarPublicacoes', (req, res) => {
