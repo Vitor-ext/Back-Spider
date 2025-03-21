@@ -58,16 +58,16 @@ server.post('/login', (req, res) => {
 
 // Rota para cadastro de usuário
 server.post('/user/cadastrarUser', (req, res) => {
-    const { nome, email, senha, premium, imagemPerfil } = req.body;
+    const { nome, email, senha, premium, imagemPerfil, senhaRecuperacao } = req.body;
 
-    if (!nome || !email || !senha || premium === undefined || !imagemPerfil) {
+    if (!nome || !email || !senha || premium === undefined || !imagemPerfil || !senhaRecuperacao) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
     }
 
     const db = readDB();
     const newId = db.usuarios.length > 0 ? db.usuarios[db.usuarios.length - 1].id + 1 : 1;
 
-    const novoUser = { id: newId, nome, email, senha, premium, imagemPerfil };
+    const novoUser = { id: newId, nome, email, senha, premium, imagemPerfil, senhaRecuperacao };
     db.usuarios.push(novoUser);
 
     writeDB(db);
@@ -136,7 +136,7 @@ server.get('/user/listarUsers', (req, res) => {
     res.status(200).json(listUser)
 })
 
-
+// Validação de Palavra Secreta
 server.post('/user/RememberPassword', (req, res) => {
     const { email, wordKey } = req.body;
 
@@ -190,13 +190,11 @@ server.put('/user/newPassword/:id', (req, res) => {
     res.status(200).json(user);
 });
 
-
 // Rota para listar os storys
 server.get('/storys/listarStorys', (req, res) => {
     const db = readDB();
     res.status(200).json(db.storys)
 })
-
 
 // Rota para criar novos storys
 server.post('/storys/cadastrarStorys', (req, res) => {
@@ -326,6 +324,91 @@ server.put('/publicacoes/atualizarPublicacao/:id', (req, res) => {
     writeDB(db);
     res.status(200).json(publicacao);
 });
+
+
+// Curtir Publicação
+server.put('/publicacoes/likePublicacao/:id', (req, res) => {
+
+    const pubId = parseInt(req.params.id, 10);
+
+    if (isNaN(pubId)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    const { idUser } = req.body;
+
+    const db = readDB();
+
+    if (!idUser || !pubId) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    const publicacao = db.publicacoes.find(publicacao => publicacao.id === pubId);
+
+
+    if (!publicacao) {
+        return res.status(404).json({ message: 'Publicação não encontrada' });
+    }
+
+    const userAlreadyLiked = publicacao.curtidas.some(like => like.idUsuario === idUser);
+
+    if (userAlreadyLiked) {
+        return res.status(400).json({ message: 'Usuário já curtiu esta publicação' });
+    }
+
+
+    publicacao.curtidas.push({ idUsuario: idUser,  idPublicacao: pubId });
+
+
+    writeDB(db);
+
+
+    return res.status(200).json({ message: 'Curtida adicionada com sucesso', publicacao });
+
+
+})
+
+// Comentar Publicação
+server.put('/publicacoes/commentPublicacao/:id', (req, res) => {
+
+    const pubId = parseInt(req.params.id, 10);
+
+    if (isNaN(pubId)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    const { idUser, descricao } = req.body;
+
+    const db = readDB();
+
+    if (!idUser || !pubId || !descricao) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    const publicacao = db.publicacoes.find(publicacao => publicacao.id === pubId);
+
+    const comentarios = db.publicacoes[2].comentarios;  // Acessando o array de comentários da publicação com id 3
+    const newId = comentarios.length > 0
+      ? comentarios[comentarios.length - 1].id + 1  // Incrementa 1 ao id do último comentário
+      : 1;  // Se não houver comentários, começa com o id 1
+
+
+    if (!publicacao) {
+        return res.status(404).json({ message: 'Publicação não encontrada' });
+    }
+
+
+    publicacao.comentarios.push({id: newId, descricao: descricao, idUsuario: idUser,  idPublicacao: pubId });
+
+
+    writeDB(db);
+
+
+    return res.status(200).json({ message: 'Comentário adicionado com sucesso', publicacao });
+
+
+})
+
 
 // Inicia o servidor
 server.listen(port, () => {
