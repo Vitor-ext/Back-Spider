@@ -48,9 +48,17 @@ server.post('/login', (req, res) => {
 
     const db = readDB();
     const usuario = db.usuarios.find((u) => u.email === email && u.senha === senha);
+    
 
     if (usuario) {
-        res.status(200).json({ success: true });
+
+        delete usuario.senhaRecuperacao
+        delete usuario.senha
+
+        res.status(200).json({ 
+            success: true,
+            user: usuario
+        });
     } else {
         res.status(401).json({ success: false, message: 'Credenciais inválidas' });
     }
