@@ -70,12 +70,21 @@ server.post('/user/cadastrarUser', (req, res) => {
 
     if (!nome || !email || !senha || premium === undefined || !imagemPerfil || !senhaRecuperacao) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+
     }
 
     const db = readDB();
+
+    const validaEmail = db.usuarios.findIndex((u) => u.email === email);
+
+    if(!Math.abs(validaEmail)) {
+        return res.status(404).json({ message: 'Email já cadastrado.' });
+    }
+
     const newId = db.usuarios.length > 0 ? db.usuarios[db.usuarios.length - 1].id + 1 : 1;
 
     const novoUser = { id: newId, nome, email, senha, premium, imagemPerfil, senhaRecuperacao };
+
     db.usuarios.push(novoUser);
 
     writeDB(db);
