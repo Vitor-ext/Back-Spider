@@ -157,11 +157,6 @@ server.get('/user/pesquisarUser/:id', (req, res) => {
     }
 
     const user = db.usuarios[userIndex];
-    if (nome) user.nome = nome;
-    if (email) user.email = email;
-    if (premium !== undefined) user.premium = premium;
-    if (senhaRecuperacao !== undefined) user.senhaRecuperacao = senhaRecuperacao;
-    if (imagemPerfil) user.imagemPerfil = imagemPerfil;
 
     res.status(200).json(user);
 });
