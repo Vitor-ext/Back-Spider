@@ -139,6 +139,36 @@ server.put('/user/atualizarUser/:id', (req, res) => {
     res.status(200).json(user);
 });
 
+
+
+// Rota para atualizar usuário
+server.get('/user/pesquisarUser/:id', (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+
+    if (isNaN(userId)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    const db = readDB();
+    const userIndex = db.usuarios.findIndex((u) => u.id === userId);
+
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    const user = db.usuarios[userIndex];
+    if (nome) user.nome = nome;
+    if (email) user.email = email;
+    if (premium !== undefined) user.premium = premium;
+    if (senhaRecuperacao !== undefined) user.senhaRecuperacao = senhaRecuperacao;
+    if (imagemPerfil) user.imagemPerfil = imagemPerfil;
+
+    res.status(200).json(user);
+});
+
+
+
+
 // Rota para listar os Usuarios
 server.get('/user/listarUsers', (req, res) => {
     const db = readDB();
