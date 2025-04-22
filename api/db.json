@@ -2,12 +2,12 @@
   "usuarios": [
      {
       "id": 1,
-      "nome": "Tayna",
-      "email": "tayna@senai.com",
-      "senha": "tayna",
+      "nome": "Pedro Henrique - PH",
+      "email": "pedro@senai.com",
+      "senha": "pedro",
       "premium": "1",
-      "imagemPerfil": "https://www.notibras.com/site/wp-content/uploads/2020/07/mulher-feliz.jpg",
-      "senhaRecuperacao": "Tay"
+      "imagemPerfil": "https://pm1.aminoapps.com/7195/2ad837ab71c8b9b384ad3caeb6a7fb0cbc49b3e7r1-400-400v2_hq.jpg",
+      "senhaRecuperacao": "ph"
     },
     {
       "id": 2,
@@ -202,8 +202,8 @@
     },
     {
       "id": 7,
-      "descricao": "Adoro bananas!",
-      "dataPublicacao": "2024-03-07",
+      "descricao": "Levando banana até em Juá!",
+      "dataPublicacao": "2025-04-22",
       "imagem": "https://agazetadoacre.com/wp-content/uploads/2021/11/d656b968-d26b-4ee6-b6bc-79aac31b5668.png",
       "local": "Mercado",
       "idUsuario": 1,
